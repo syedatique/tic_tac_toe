@@ -10,7 +10,9 @@ class Game
   end
 
   def make_move(player, square)
-    @moves << Move.new(player, square, symbol_for_player(player))
+    if players_turn?(player) && square_in_bound?(square) && square_is_empty?(square)
+      @moves << Move.new(player, square, symbol_for_player(player))
+    end
   end
 
   def finished?
@@ -63,23 +65,40 @@ class Game
 
   private
   def drawn_game?
-    # is it a draw?
-  # (0..8).all? {|i| moves[i]}
-  moves.size == 9
-end
-
-
-private
-def symbol_for_player(player)
-  case player
-  when player1
-    'X'
-  when player2
-    'O'
-  else
-    raise "OI! that's not one of my player"
+    # (0..8).all? {|i| moves[i]}
+    moves.size == 9
   end
 
-end
+  private
+  def players_turn?(player)
+    whose_turn == player
+  end
+
+  private
+  def square_in_bound?(square)
+    return unless square.to_i.to_s == square.to_s
+    square = square.to_i
+    # return unless square.is_a?(FixNum)
+    square < 9 && square > -1
+  end
+
+  private
+  def square_is_empty?(square)
+    !board[square]
+  end
+
+
+
+  private
+  def symbol_for_player(player)
+    case player
+    when player1
+      'X'
+    when player2
+      'O'
+    else
+      raise "OI! that's not one of my player"
+    end
+  end
 
 end

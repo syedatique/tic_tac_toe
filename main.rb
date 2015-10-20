@@ -54,6 +54,34 @@ expect g.finished?, true
 expect g.result, "Michael won!"
 
 
+
+# test for invalid move
+g = Game.new
+
+g.player1 = "Michael"
+g.player2 = "Rick"
+
+g.make_move "Rick", 4
+
+expect g.moves.last, nil
+# check for too low a value
+g.make_move "Neil" , -44
+expect g.moves.last , nil
+
+# check for occupied square
+g.make_move "Michael", 4
+g.make_move "Neil", 4
+
+expect g.moves.last.player, "Michael"
+
+
+
+
+
+
+binding.pry
+exit
+
 g = Game.new
 puts "What is player1's name"
 g.player1 = gets.chomp
@@ -78,7 +106,6 @@ until g.finished?
   end
 
   # binding.pry
-
 end
 
 puts 'clear'
